@@ -1,7 +1,19 @@
+<script setup></script>
 <template>
-    <div>
+    <div class="box">
       <h1>Sobre</h1>
       <p>Esta é a página sobre.</p>
     </div>
-  </template>
-  
+</template>
+
+<style scoped>
+.box {
+  background: lightblue;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+h2 {
+  color: navy;
+}
+</style>
