@@ -18,7 +18,7 @@ const contas = ref<Conta[]>([]);
 
 const getAllAccounts = async () => {
   try {
-    const response = await axios.get("https://roger-ddr-albuquerque-mm.trycloudflare.com/bank-account/findAll");
+    const response = await axios.get("https://instantly-consolidation-bin-linda.trycloudflare.com/bank-account/findAll");
     contas.value = response.data; 
   } catch (error) {
     console.error("Erro ao buscar contas", error);
@@ -34,40 +34,43 @@ onMounted(() => {
 
 <template>
   <div class="container mt-5">
-    <h2>Lista de Contas Cadastradas</h2>
+    <h2>Contas Cadastradas</h2>
     
+    <div v-if="contas.length > 0">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Agência</th>
+            <th scope="col">Tipo de Conta</th>
+            <th scope="col">Nome do Titular</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Tipo Legal</th>
+            <th scope="col">Documento</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="conta in contas" :key="conta.holderDocument">
+            <td>{{ conta.branch }}</td>
+            <td>{{ conta.type === 'CURRENT' ? 'Conta Corrente' : 'Conta Pagamento' }}</td>
+            <td>{{ conta.holderName }}</td>
+            <td>{{ conta.holderEmail }}</td>
+            <td>{{ conta.holderType === 'NATURAL' ? 'Pessoa Física' : 'Pessoa Jurídica' }}</td>
+            <td>{{ conta.holderDocument }}</td>
+            <td>{{ conta.status === 'ACTIVE' ? 'Ativa' : conta.status === 'BLOCKED' ? 'Bloqueada' : 'Finalizada' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">Agência</th>
-          <th scope="col">Tipo de Conta</th>
-          <th scope="col">Nome do Titular</th>
-          <th scope="col">E-mail</th>
-          <th scope="col">Tipo Legal</th>
-          <th scope="col">Documento</th>
-          <th scope="col">Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        
-        <tr v-for="conta in contas" :key="conta.holderDocument">
-          <td>{{ conta.branch }}</td>
-          <td>{{ conta.type === 'CURRENT' ? 'Conta Corrente' : 'Conta Pagamento' }}</td>
-          <td>{{ conta.holderName }}</td>
-          <td>{{ conta.holderEmail }}</td>
-          <td>{{ conta.holderType === 'NATURAL' ? 'Pessoa Física' : 'Pessoa Jurídica' }}</td>
-          <td>{{ conta.holderDocument }}</td>
-          <td>{{ conta.status === 'ACTIVE' ? 'Ativa' : conta.status === 'BLOCKED' ? 'Bloqueada' : 'Finalizada' }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <p v-else style="text-align: center;">Sem nenhum resultado.</p>
   </div>
 </template>
 
+
 <style scoped>
 .container {
-  max-width: 800px;
+  max-width: 100%;
   background: #fff;
   padding: 20px;
   border-radius: 10px;
