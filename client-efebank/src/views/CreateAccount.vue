@@ -48,7 +48,7 @@ const resetForm = () => {
 };
 const createAccount = async () => {
   try {
-    const response = await axios.post("https://5bf2-189-38-98-141.ngrok-free.app/bank-account", conta.value);
+    const response = await axios.post("https://roger-ddr-albuquerque-mm.trycloudflare.com/bank-account", conta.value);
     alert("Conta criada com sucesso!");
     console.log(response.data);
     resetForm();

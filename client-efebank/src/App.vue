@@ -7,7 +7,7 @@
       
       <v-btn  :to="homeLink">Home</v-btn>
       <v-btn  :to="aboutLink">Sobre</v-btn>
-      <v-btn  :to="createAccountLink">Criar uma conta</v-btn>
+      <!-- <v-btn  :to="createAccountLink">Criar uma conta</v-btn> -->
     </v-app-bar>
 
     
