@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import axios from "axios";
 
 interface Conta {
@@ -12,13 +13,12 @@ interface Conta {
   status: string;
 }
 
-
 const contas = ref<Conta[]>([]);
-
+const router = useRouter();
 
 const getAllAccounts = async () => {
   try {
-    const response = await axios.get("https://instantly-consolidation-bin-linda.trycloudflare.com/bank-account/findAll");
+    const response = await axios.get("https://cult-nov-hh-bored.trycloudflare.com/bank-account/findAll");
     contas.value = response.data; 
   } catch (error) {
     console.error("Erro ao buscar contas", error);
@@ -26,6 +26,10 @@ const getAllAccounts = async () => {
   }
 };
 
+
+const goToDetails = (conta: Conta) => {
+  router.push(`/bankAccount/details/${conta.holderDocument}`);
+};
 
 onMounted(() => {
   getAllAccounts();
@@ -50,7 +54,7 @@ onMounted(() => {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="conta in contas" :key="conta.holderDocument">
+          <tr v-for="conta in contas" :key="conta.holderDocument" @click="goToDetails(conta)" class="table-row">
             <td>{{ conta.branch }}</td>
             <td>{{ conta.type === 'CURRENT' ? 'Conta Corrente' : 'Conta Pagamento' }}</td>
             <td>{{ conta.holderName }}</td>
@@ -77,9 +81,13 @@ onMounted(() => {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
+.table-row {
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.table-row:hover {
+  background-color: #000;
 }
 
 th, td {
