@@ -29,7 +29,7 @@ const router = useRouter();
 const logar = () => {
  
   console.log('Redirecionando para a tela de login...');
-  router.push('/login');
+  router.push('/bankAccount');
 };
 
 const criarConta = () => {

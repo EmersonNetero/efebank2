@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch } from "vue";
 import axios from "axios";
-
 
 enum AccountType {
   PAYMENT = "PAYMENT",
@@ -19,39 +18,33 @@ enum AccountStatus {
   FINISHED = "FINISHED",
 }
 
-
 const conta = ref({
-  branch: "", 
-  type: AccountType.CURRENT, 
-  holderName: "", 
-  holderEmail: "", 
-  holderType: HolderType.NATURAL, 
-  holderDocument: "", 
+  branch: "",
+  type: AccountType.CURRENT,
+  holderName: "",
+  holderEmail: "",
+  holderType: HolderType.NATURAL,
+  holderDocument: "",
   status: AccountStatus.ACTIVE, 
 });
 
 
-watch(() => conta.value.holderType, () => {
-  conta.value.holderDocument = "";
-});
+watch(
+  () => conta.value.holderType,
+  () => {
+    conta.value.holderDocument = "";
+  }
+);
 
-const resetForm = () => {
-  conta.value = {
-    branch: "", 
-    type: AccountType.CURRENT, 
-    holderName: "", 
-    holderEmail: "", 
-    holderType: HolderType.NATURAL, 
-    holderDocument: "", 
-    status: AccountStatus.ACTIVE, 
-  };
-};
-const createAccount = async () => {
+
+const criarConta = async () => {
   try {
-    const response = await axios.post("https://5bf2-189-38-98-141.ngrok-free.app/bank-account", conta.value);
+    const response = await axios.post(
+      "http://localhost:3000/contas",
+      conta.value
+    );
     alert("Conta criada com sucesso!");
     console.log(response.data);
-    resetForm();
   } catch (error) {
     console.error("Erro ao criar conta", error);
     alert("Erro ao criar conta");
@@ -62,8 +55,8 @@ const createAccount = async () => {
 <template>
   <div class="container mt-5">
     <h2>Criação de Conta Bancária</h2>
-    <form @submit.prevent="createAccount">
-      
+    <form @submit.prevent="criarConta">
+      <!-- Agência (Branch) -->
       <div class="mb-3">
         <label for="branch" class="form-label">Agência</label>
         <input
@@ -75,7 +68,7 @@ const createAccount = async () => {
         />
       </div>
 
-      
+      <!-- Tipo de Conta (Type) -->
       <div class="mb-3">
         <label for="type" class="form-label">Tipo de Conta</label>
         <select id="type" v-model="conta.type" class="form-select" required>
@@ -84,7 +77,7 @@ const createAccount = async () => {
         </select>
       </div>
 
-     
+      <!-- Nome do Titular (Holder Name) -->
       <div class="mb-3">
         <label for="holderName" class="form-label">Nome do Titular</label>
         <input
@@ -96,7 +89,7 @@ const createAccount = async () => {
         />
       </div>
 
-     
+      <!-- E-mail do Titular (Holder Email) -->
       <div class="mb-3">
         <label for="holderEmail" class="form-label">E-mail do Titular</label>
         <input
@@ -108,7 +101,7 @@ const createAccount = async () => {
         />
       </div>
 
-      
+      <!-- Tipo Legal do Titular (Holder Type) -->
       <div class="mb-3">
         <label for="holderType" class="form-label">Tipo Legal do Titular</label>
         <select
@@ -122,7 +115,7 @@ const createAccount = async () => {
         </select>
       </div>
 
-      
+      <!-- Documento (Holder Document) -->
       <div class="mb-3">
         <label for="holderDocument" class="form-label">
           {{ conta.holderType === HolderType.NATURAL ? "CPF" : "CNPJ" }}
@@ -132,12 +125,27 @@ const createAccount = async () => {
           id="holderDocument"
           v-model="conta.holderDocument"
           class="form-control"
-          :placeholder="conta.holderType === HolderType.NATURAL ? '000.000.000-00' : '00.000.000/0000-00'"
+          :placeholder="
+            conta.holderType === HolderType.NATURAL
+              ? '000.000.000-00'
+              : '00.000.000/0000-00'
+          "
           required
         />
       </div>
 
-      <button type="submit" class="btn btn-primary" @click="createAccount">Criar Conta</button>
+      <!-- Status da Conta (Account Status) -->
+      <div class="mb-3">
+        <label for="status" class="form-label">Status da Conta</label>
+        <select id="status" v-model="conta.status" class="form-select" required>
+          <option :value="AccountStatus.ACTIVE">Ativa</option>
+          <option :value="AccountStatus.BLOCKED">Bloqueada</option>
+          <option :value="AccountStatus.FINISHED">Finalizada</option>
+        </select>
+      </div>
+
+      <!-- Botão de Envio -->
+      <button type="submit" class="btn btn-primary">Criar Conta</button>
     </form>
   </div>
 </template>

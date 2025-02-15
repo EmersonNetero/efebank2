@@ -1,29 +1,51 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
+    
+    <v-app-bar app color="#002366" dark>
       <v-toolbar-title>EFE-bank</v-toolbar-title>
-
-      <v-spacer></v-spacer>
-      <v-btn text to="/">Home</v-btn>
-      <v-btn text to="/about">Sobre</v-btn>
-      <v-btn text to="/createAccount">Criar uma conta</v-btn>
+      <v-spacer ></v-spacer>
+      
+      <v-btn  :to="homeLink">Home</v-btn>
+      <v-btn  :to="aboutLink">Sobre</v-btn>
+      <v-btn  :to="createAccountLink">Criar uma conta</v-btn>
     </v-app-bar>
 
-    <v-main>
-      <v-container>
-        <router-view />
-      </v-container>
+    
+    <v-main class="main-container">  
+      <router-view />
     </v-main>
   </v-app>
 </template>
 
-<script>
-export default {
-  name: 'App',
-};
+<script setup lang="ts">
+import { ref } from 'vue';
+
+
+const homeLink = ref('/');
+const aboutLink = ref('/about');
+const createAccountLink = ref('/createAccount');
 </script>
 
 <style scoped>
-/* Estilos adicionais podem ser definidos aqui */
-</style>
+.main-container {
+  background-color: #ffffff; 
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
 
+
+.v-container {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+
+.v-btn {
+  color: #ffffff; 
+}
+
+
+.v-app-bar {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+}
+</style>
